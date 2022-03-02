@@ -1,9 +1,18 @@
 const Ably = require('ably');
 
+const env = (name) => {
+  const val = process.env[name];
+  if(!val || val === '') {
+    console.error(`ERROR: Missing env var: ${name}`);
+    process.exit(1);
+  }
+  return val;
+}
+
 const me = {
-  id: 'eu-west-1',
-  city: 'Ireland',
-  coordinates: [-8, 53 ],
+  id: env('BOT_ID'),
+  city: env('BOT_CITY'),
+  coordinates: [env('BOT_LONGITUDE'), env('BOT_LATITUDE') ],
 };
 
 const client = new Ably.Realtime({
@@ -13,16 +22,8 @@ const client = new Ably.Realtime({
 
 const channel = client.channels.get('ably-latency-map');
 
-const cleanup = () => {
-  channel.presence.leave();
-  client.close();
-};
-
-process.on('SIGINT', cleanup);
-process.on('SIGTERM', cleanup);
-
 const main = async () => {
-  console.log(`Entering channel: ${JSON.stringify(me)}`);
+  console.log(`Entering channel: me=${JSON.stringify(me)}`);
   try {
     await channel.presence.enter(me);
   } catch (err) {
@@ -64,5 +65,13 @@ const main = async () => {
     };
   });
 };
+
+const cleanup = () => {
+  channel.presence.leave();
+  client.close();
+};
+
+process.on('SIGINT', cleanup);
+process.on('SIGTERM', cleanup);
 
 main();
