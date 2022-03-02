@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Marker } from 'react-simple-maps';
 
-import { Channel } from './Channel';
+import { Channel, Pong } from './Channel';
 
 export interface BotInfo {
   id: string;
@@ -19,9 +19,15 @@ export const Bot = ({ channel, bot }: BotProps) => {
   const [text, setText] = useState('0');
 
   useEffect(() => {
-    channel.subscribePong(bot.id, ({ seq, diff }) => {
+    const callback = ({ seq, diff }: Pong) => {
       setText(`${seq}: ${diff}`);
-    });
+    };
+
+    channel.onPong(bot.id, callback);
+
+    return () => {
+      channel.offPong(bot.id, callback);
+    };
   }, []);
 
   return (

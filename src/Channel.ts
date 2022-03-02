@@ -47,7 +47,11 @@ export class Channel extends EventEmitter {
     }
   }
 
-  subscribePong(botId: string, callback: PongCallback) {
+  onPong(botId: string, callback: PongCallback) {
     this.on(`pong:${botId}`, callback);
+  }
+
+  offPong(botId: string, callback: PongCallback) {
+    this.off(`pong:${botId}`, callback);
   }
 };
