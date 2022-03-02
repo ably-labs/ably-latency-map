@@ -15,17 +15,24 @@ interface Bot {
   coordinates: [number, number];
 }
 
+const client = new Ably.Realtime({
+  authUrl: 'https://ably.com/ably-auth/token/demos',
+});
+
+const channel = client.channels.get('ably-latency-map');
+
+let seq = 1;
+
+const publish = (botId: string) => {
+  channel.publish('request', { seq, botId });
+  seq++;
+};
+
 function App() {
   const [bots, setBots] = useState<Bot[]>([]);
   const [error, setError] = useState<Ably.Types.ErrorInfo>();
 
-  useEffect(() => {
-    const client = new Ably.Realtime({
-      authUrl: 'https://ably.com/ably-auth/token/demos',
-    });
-
-    const channel = client.channels.get('ably-latency-map');
-
+  const updateBots = () => {
     channel.presence.get((err, members) => {
       if(err) {
         setError(err);
@@ -36,9 +43,15 @@ function App() {
 
       setBots(bots);
     });
+  };
+
+  useEffect(() => {
+    updateBots();
+
+    channel.presence.subscribe(updateBots);
 
     return () => {
-      client.close();
+      channel.presence.unsubscribe();
     };
   }, []);
 
@@ -64,7 +77,7 @@ function App() {
           }
         </Geographies>
         {bots.map(bot => (
-          <Marker key={bot.id} coordinates={bot.coordinates} onClick={() => alert(bot.city)}>
+          <Marker key={bot.id} coordinates={bot.coordinates} onClick={() => publish(bot.id)}>
             <circle r={10} fill="#F00" stroke="#fff" strokeWidth={2} />
           </Marker>
         ))}
