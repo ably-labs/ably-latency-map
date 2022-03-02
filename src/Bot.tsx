@@ -54,7 +54,7 @@ export const Bot = ({ channel, bot }: BotProps) => {
     return () => {
       channel.offPong(bot.id, callback);
     };
-  }, []);
+  }, [channel, bot.id]);
 
   return (
     <Marker coordinates={bot.coordinates} onClick={() => channel.publish(bot.id)}>
