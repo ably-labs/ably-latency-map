@@ -9,27 +9,17 @@ import {
   Marker,
 } from 'react-simple-maps';
 
-interface Bot {
-  id: string;
-  city: string;
-  coordinates: [number, number];
-}
+import { Bot, BotInfo } from './Bot';
+import { Channel } from './Channel';
 
 const client = new Ably.Realtime({
   authUrl: 'https://ably.com/ably-auth/token/demos',
 });
 
-const channel = client.channels.get('ably-latency-map');
-
-let seq = 1;
-
-const publish = (botId: string) => {
-  channel.publish('request', { seq, botId });
-  seq++;
-};
+const channel = new Channel(client);
 
 function App() {
-  const [bots, setBots] = useState<Bot[]>([]);
+  const [bots, setBots] = useState<BotInfo[]>([]);
   const [error, setError] = useState<Ably.Types.ErrorInfo>();
 
   const updateBots = () => {
@@ -77,9 +67,7 @@ function App() {
           }
         </Geographies>
         {bots.map(bot => (
-          <Marker key={bot.id} coordinates={bot.coordinates} onClick={() => publish(bot.id)}>
-            <circle r={10} fill="#F00" stroke="#fff" strokeWidth={2} />
-          </Marker>
+          <Bot key={bot.id} bot={bot} channel={channel} />
         ))}
       </ComposableMap>
     </div>
