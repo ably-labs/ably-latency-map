@@ -9,6 +9,7 @@ import {
   Marker,
 } from 'react-simple-maps';
 
+import './App.css';
 import { Bot, BotInfo } from './Bot';
 import { Channel } from './Channel';
 
