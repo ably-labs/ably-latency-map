@@ -1,0 +1,23 @@
+{
+  "name": "ably-latency-bot",
+  "version": "1.0.0",
+  "description": "Ably latency bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ably-labs/ably-latency-map.git"
+  },
+  "author": "Lewis Marshall <lewis.marshall@ably.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ably-labs/ably-latency-map/issues"
+  },
+  "homepage": "https://github.com/ably-labs/ably-latency-map#readme",
+  "dependencies": {
+    "ably": "^1.2.17"
+  }
+}
