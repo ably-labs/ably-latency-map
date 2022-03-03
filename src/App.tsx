@@ -13,7 +13,9 @@ import { Bot, BotInfo } from './Bot';
 import { Channel } from './Channel';
 
 const client = new Ably.Realtime({
-  authUrl: 'https://ably.com/ably-auth/token/demos',
+  // A demo key from https://ably.com/ably-auth/api-key/demos
+  key: "I2E_JQ.JE8vqw:gdkB884-fGzlcwm5k-R78fylxbO0MVdgelQdKrtOwFw",
+  // authUrl: 'https://ably.com/ably-auth/token/demos', // Doesn't work with CORS
 });
 
 const channel = new Channel(client);
