@@ -1,46 +1,48 @@
-# Getting Started with Create React App
+# Ably Latency Map
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A demonstration of the latency experienced when sending messages through Ably to countries around the world.
 
-## Available Scripts
+## Bot
 
-In the project directory, you can run:
+The `bot` directory contains a server side application which is responsible for sending and receiving messages on an Ably channel, and reporting the observed latency.
 
-### `npm start`
+A bot is started with the following environment variables:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- `BOT_ID`: an identifier for sending messages to this bot
+- `BOT_CITY`: the city the bot is running in
+- `BOT_LATITUDE` & `BOT_LONGITUDE`: the co-ordinates of the location of the bot
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The bot enters the `ably-latency-map` channel with its details as its presence data.
 
-### `npm test`
+The bot listens for a `request` message with its ID and sends a `ping` message.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The bot also listens for a `ping` message, and publishes a `pong` message with the duration since the ping was sent.
 
-### `npm run build`
+To run a bot:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+cd bot
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+export BOT_ID=eu-west-1
+export BOT_CITY=Dublin
+export BOT_LATITUDE="53"
+export BOT_LONGITUDE="-8"
 
-### `npm run eject`
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## React App
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The `src` directory contains a browser React application which displays a map to the user with each bots location, allows them to instruct a bot to send a `ping` message by clicking them, and visualises the resulting `pong` messages.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+To run the app:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+npm install
 
-## Learn More
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+_NOTE: the React app currently uses a hard-coded, but short lived, API key in src/App.tsx, so that may need to be updated before the app will work. I wanted this to use an authUrl, but I got hit by CORS issues :/_.
