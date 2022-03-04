@@ -49,7 +49,12 @@ source <(ably-env secrets print-aws --account playground)
 
 ## React App
 
-The `src` directory contains a browser React application which displays a map to the user with each bots location, allows them to instruct a bot to send a `ping` message by clicking them, and visualises the resulting `pong` messages.
+The `src` directory contains a React application which displays a map to the user with each bots location. It retrieves this information from presence data on the `ably-latency-map` channel.
+
+
+The user can click a bot on the map to instruct it to send a `ping` message, and then visualises the resulting `pong` messages.
+
+The observed latency of each bot influences its color, with "great" latencies being green, "ok" latencies being orange, and "not so good" latencies being red.
 
 To run the app:
 
