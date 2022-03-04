@@ -20,7 +20,7 @@ The bot listens for a `request` message with its ID and sends a `ping` message.
 
 The bot also listens for a `ping` message, and publishes a `pong` message with the duration since the ping was sent.
 
-To run a bot:
+To run a bot locally:
 
 ```
 cd bot
@@ -33,6 +33,18 @@ export BOT_LATITUDE="53"
 export BOT_LONGITUDE="-8"
 
 npm start
+```
+
+To run bots on EC2 instances across the world, use the `launch.sh` script:
+
+```
+source <(ably-env secrets print-aws --account playground)
+
+./launch.sh ap-southeast-1
+./launch.sh ap-southeast-2
+./launch.sh eu-west-1
+./launch.sh us-east-1
+./launch.sh us-west-1
 ```
 
 ## React App
