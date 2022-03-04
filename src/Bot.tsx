@@ -15,7 +15,7 @@ interface BotProps {
   bot: BotInfo;
 }
 
-const colors = [
+export const Colors = [
   '#00ff00',
   '#5bf400',
   '#7de800',
@@ -34,19 +34,19 @@ const colors = [
 ];
 
 export const Bot = ({ channel, bot }: BotProps) => {
-  const [text, setText] = useState('0');
-  const [color, setColor] = useState(colors[0]);
+  const [pong, setPong] = useState<Pong>();
+  const [color, setColor] = useState(Colors[0]);
 
   const colorFor = (pong: Pong) => {
-      const colorIndex = Math.floor(pong.diff / 150 * colors.length);
+      const colorIndex = Math.floor(pong.diff / 225 * Colors.length);
 
-      return colors[colorIndex] || colors[colors.length - 1];
+      return Colors[colorIndex] || Colors[Colors.length - 1];
   };
 
   useEffect(() => {
     const callback = (pong: Pong) => {
+      setPong(pong);
       setColor(colorFor(pong))
-      setText(`${pong.seq}: ${pong.diff}`);
     };
 
     channel.onPong(bot.id, callback);
@@ -57,9 +57,15 @@ export const Bot = ({ channel, bot }: BotProps) => {
   }, [channel, bot.id]);
 
   return (
-    <Marker coordinates={bot.coordinates} onClick={() => channel.publish(bot.id)}>
-      <circle r={10} fill={color} stroke="#fff" strokeWidth={2} />
-      <text>{text}ms</text>
+    <Marker coordinates={bot.coordinates}>
+      <text x="0" y="-15" font-size="0.8em" text-anchor="middle">{bot.city}</text>
+      <circle r={10} fill={color} stroke="#fff" strokeWidth={2} cursor="pointer" onClick={() => channel.publish(bot.id)} />
+      {pong && (
+        <text x="0" y="4" font-size="0.8em" text-anchor="middle">{pong.seq}</text>
+      )}
+      <text x="0" y="22" font-size="0.8em" text-anchor="middle">
+        {pong ? `${pong.diff}ms` : '-'}
+      </text>
     </Marker>
   );
 };

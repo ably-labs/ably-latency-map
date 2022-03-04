@@ -9,7 +9,7 @@ import {
 } from 'react-simple-maps';
 
 import './App.css';
-import { Bot, BotInfo } from './Bot';
+import { Bot, BotInfo, Colors } from './Bot';
 import { Channel } from './Channel';
 
 const client = new Ably.Realtime({
@@ -72,6 +72,14 @@ function App() {
           <Bot key={bot.id} bot={bot} channel={channel} />
         ))}
       </ComposableMap>
+      <div>
+        {Colors.map((color, index) => (
+          <svg width="76" height="48">
+            <circle cx="26" cy="12" r={10} fill={color} stroke="#fff" strokeWidth={2} />
+            <text x="24" y="36" font-size="0.8em" text-anchor="middle">{(index+1)*15}ms</text>
+          </svg>
+        ))}
+      </div>
     </div>
   );
 }
