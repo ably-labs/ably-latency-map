@@ -2,6 +2,8 @@
 
 A demonstration of the latency experienced when sending messages through Ably to countries around the world.
 
+![demo](/public/demo.png)
+
 ## Bot
 
 The `bot` directory contains a server side application which is responsible for sending and receiving messages on an Ably channel, and reporting the observed latency.
