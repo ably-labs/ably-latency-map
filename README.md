@@ -1,6 +1,6 @@
 # Ably Latency Map
 
-A demonstration of the latency experienced when sending messages through Ably to countries around the world.
+A interactive demonstration of the latency experienced when sending messages through Ably to countries around the world.
 
 ![demo](/public/demo.png)
 
